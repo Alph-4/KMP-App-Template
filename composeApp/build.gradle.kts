@@ -7,6 +7,9 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.kotlinxSerialization)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.androidx.room)
+
 }
 
 kotlin {
@@ -33,6 +36,10 @@ kotlin {
             implementation(libs.androidx.compose.ui.tooling.preview)
             implementation(libs.androidx.activity.compose)
             implementation(libs.ktor.client.okhttp)
+
+            //ROOM
+            //implementation(libs.androidx.room.sqlite.wrapper)
+
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
@@ -59,9 +66,16 @@ kotlin {
             implementation(libs.koin.compose.viewmodel)
 
             implementation("org.jetbrains.compose.material:material-icons-extended:1.7.3")
-
+            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0") // (Vérifiez la version dans votre toml)
+            //ROOM
+            implementation(libs.androidx.room.runtime)
+            implementation(libs.androidx.sqlite.bundled)
         }
     }
+}
+
+room {
+    schemaDirectory("$projectDir/schemas")
 }
 
 android {
@@ -92,5 +106,21 @@ android {
 }
 
 dependencies {
-    debugImplementation(libs.androidx.compose.ui.tooling)
+    debugImplementation(libs.androidx.compose.ui.tooling)    // Ajoutez cette ligne pour la compilation commune (évite des erreurs d'IDE)
+    add("kspCommonMainMetadata", libs.androidx.room.compiler)
+
+    add("kspAndroid", libs.androidx.room.compiler)
+    add("kspIosSimulatorArm64", libs.androidx.room.compiler)
+    add("kspIosX64", libs.androidx.room.compiler)
+    add("kspIosArm64", libs.androidx.room.compiler)
+
+    with(libs.androidx.room.compiler) {
+        add("kspAndroid", this)
+        add("kspIosX64", this)
+        add("kspIosArm64", this)
+        add("kspIosSimulatorArm64", this)
+        // Utile pour que l'IDE comprenne les annotations dans le code commun
+        // (Note: peut nécessiter d'être activé explicitement dans certains projets, mais recommandé)
+        // add("kspCommonMainMetadata", this)
+    }
 }
