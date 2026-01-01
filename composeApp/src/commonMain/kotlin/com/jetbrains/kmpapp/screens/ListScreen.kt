@@ -1,9 +1,10 @@
-package com.jetbrains.kmpapp.screens.list
+package com.jetbrains.kmpapp.screens
 
-import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
@@ -16,36 +17,88 @@ import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
+import com.jetbrains.kmpapp.model.ListUiState
 import com.jetbrains.kmpapp.model.MuseumObject
 import com.jetbrains.kmpapp.viewmodel.ListViewModel
-import com.jetbrains.kmpapp.screens.EmptyScreenContent
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun ListScreen(
-    navigateToDetails: (objectId: Int) -> Unit
+    navigateToDetails: (objectId: Int) -> Unit,
+    contentPadding: PaddingValues = PaddingValues(0.dp)
 ) {
     val viewModel = koinViewModel<ListViewModel>()
-    val objects by viewModel.objects.collectAsStateWithLifecycle()
+    val state by viewModel.objects.collectAsStateWithLifecycle()
 
-    AnimatedContent(objects.isNotEmpty()) { objectsAvailable ->
-        if (objectsAvailable) {
-            ObjectGrid(
-                objects = objects,
-                onObjectClick = navigateToDetails,
-            )
-        } else {
+    Scaffold(
+        topBar = {
+            @OptIn(ExperimentalMaterial3Api::class)
+            TopAppBar(title = {
+                Text(
+                    text = "Bienvenue",
+                    maxLines = 1
+                )
+            })}
+        ,
+        bottomBar = {
+            NavigationBar {
+                NavigationBarItem(
+                    icon = { Icon(Icons.Default.Home, contentDescription = "Home") },
+                    label = { Text("Accueil") },
+                    selected = true, // À gérer avec un état normalement
+                    onClick = { /* Action de navigation */ }
+                )
+                NavigationBarItem(
+                    icon = { Icon(Icons.Default.Info, contentDescription = "Info") },
+                    label = { Text("Infos") },
+                    selected = false,
+                    onClick = { /* Action de navigation */ }
+                )
+            }
+        }
+    ) { paddingValues ->
+        Box(modifier = Modifier.padding(paddingValues)) {
+        when (val uiState = state) {
+            is ListUiState.Loading -> {
+                Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    CircularProgressIndicator()
+                }
+            }
+            is ListUiState.Success -> {
+                var objects = uiState.objects
+
+                if (objects.isNotEmpty()) {
+                    ObjectGrid(
+                        objects = objects,
+                        onObjectClick = navigateToDetails,
+                    )
+                }
+            } is ListUiState.Error -> {
+            // Afficher le message d'erreur
             EmptyScreenContent(Modifier.fillMaxSize())
+        }
+        }
         }
     }
 }

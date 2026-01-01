@@ -1,4 +1,4 @@
-package com.jetbrains.kmpapp.screens.detail
+package com.jetbrains.kmpapp.screens
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.background
@@ -21,10 +21,14 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -37,7 +41,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import com.jetbrains.kmpapp.model.MuseumObject
 import com.jetbrains.kmpapp.viewmodel.DetailViewModel
-import com.jetbrains.kmpapp.screens.EmptyScreenContent
 import kmp_app_template.composeapp.generated.resources.Res
 import kmp_app_template.composeapp.generated.resources.back
 import kmp_app_template.composeapp.generated.resources.label_artist
@@ -48,6 +51,7 @@ import kmp_app_template.composeapp.generated.resources.label_dimensions
 import kmp_app_template.composeapp.generated.resources.label_medium
 import kmp_app_template.composeapp.generated.resources.label_repository
 import kmp_app_template.composeapp.generated.resources.label_title
+import kotlinx.coroutines.delay
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
@@ -58,11 +62,20 @@ fun DetailScreen(
     navigateBack: () -> Unit,
 ) {
     val viewModel = koinViewModel<DetailViewModel> { parametersOf(objectId) }
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    LaunchedEffect(Unit) {
+        delay(1000)
+        println("Envoi du toast LaunchedEffect")
+        if (false){
+            snackbarHostState.showSnackbar("Ceci est un message Toast !")
+        }
+    }
 
     val obj by viewModel.obj.collectAsStateWithLifecycle()
     AnimatedContent(obj != null) { objectAvailable ->
         if (objectAvailable) {
-            ObjectDetails(obj!!, onBackClick = navigateBack)
+            ObjectDetails(obj!!,snackbarHostState, onBackClick = navigateBack)
         } else {
             EmptyScreenContent(Modifier.fillMaxSize())
         }
@@ -72,10 +85,15 @@ fun DetailScreen(
 @Composable
 private fun ObjectDetails(
     obj: MuseumObject,
+    snackBarHostState: SnackbarHostState,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+
+
     Scaffold(
+        snackbarHost = { SnackbarHost(hostState = snackBarHostState) }
+        ,
         topBar = {
             @OptIn(ExperimentalMaterial3Api::class)
             TopAppBar(
