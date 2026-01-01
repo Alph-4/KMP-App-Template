@@ -57,6 +57,9 @@ kotlin {
             implementation(libs.coil.network.ktor)
             implementation(libs.koin.core)
             implementation(libs.koin.compose.viewmodel)
+
+            implementation("org.jetbrains.compose.material:material-icons-extended:1.7.3")
+
         }
     }
 }

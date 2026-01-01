@@ -51,33 +51,7 @@ fun ListScreen(
     val viewModel = koinViewModel<ListViewModel>()
     val state by viewModel.objects.collectAsStateWithLifecycle()
 
-    Scaffold(
-        topBar = {
-            @OptIn(ExperimentalMaterial3Api::class)
-            TopAppBar(title = {
-                Text(
-                    text = "Bienvenue",
-                    maxLines = 1
-                )
-            })}
-        ,
-        bottomBar = {
-            NavigationBar {
-                NavigationBarItem(
-                    icon = { Icon(Icons.Default.Home, contentDescription = "Home") },
-                    label = { Text("Accueil") },
-                    selected = true, // À gérer avec un état normalement
-                    onClick = { /* Action de navigation */ }
-                )
-                NavigationBarItem(
-                    icon = { Icon(Icons.Default.Info, contentDescription = "Info") },
-                    label = { Text("Infos") },
-                    selected = false,
-                    onClick = { /* Action de navigation */ }
-                )
-            }
-        }
-    ) { paddingValues ->
+    Scaffold() { paddingValues ->
         Box(modifier = Modifier.padding(paddingValues)) {
         when (val uiState = state) {
             is ListUiState.Loading -> {

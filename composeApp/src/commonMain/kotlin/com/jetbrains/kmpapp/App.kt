@@ -18,7 +18,6 @@ import androidx.navigation.toRoute
 import com.jetbrains.kmpapp.screens.DetailScreen
 import com.jetbrains.kmpapp.screens.MainScreen
 
-
 @Composable
 fun App() {
     val systemIsDark = isSystemInDarkTheme()

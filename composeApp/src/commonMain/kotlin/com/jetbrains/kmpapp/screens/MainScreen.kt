@@ -1,9 +1,12 @@
 package com.jetbrains.kmpapp.screens
 
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Sort
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.outlined.SortByAlpha
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -18,6 +21,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.material3.IconButton
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 
 // 1. Définir les destinations possibles de la BottomBar
 enum class MainTab(val label: String, val icon: ImageVector) {
@@ -38,7 +44,20 @@ fun MainScreen(
         topBar = {
             @OptIn(ExperimentalMaterial3Api::class)
             TopAppBar(
-                title = { Text(currentTab.label) }
+                title = { Text(currentTab.label) },
+                actions = {
+                    if (currentTab == MainTab.Home) {
+                        IconButton(onClick = { /* Action à effectuer, par ex. rafraîchir */
+
+                        }) {
+                            Icon(
+                                contentDescription = "Sort icon",
+                                imageVector = Icons.AutoMirrored.Default.Sort,
+                                tint = Color.Red,
+                            )
+                        }
+                    }
+                }
             )
         },
         bottomBar = {
