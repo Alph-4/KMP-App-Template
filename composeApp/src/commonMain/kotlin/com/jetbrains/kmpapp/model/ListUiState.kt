@@ -7,7 +7,7 @@ enum class SortingType{
 }
 sealed interface ListUiState {
     data object Loading : ListUiState
-    data class Success(val objects: List<MuseumObject>,
+    data class Success(val objects: List<MuseumDtoObject>,
                        val sortingType: SortingType = SortingType.Ascending ) : ListUiState
     data class Error(val message: String) : ListUiState
 

@@ -2,7 +2,7 @@ package com.jetbrains.kmpapp.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jetbrains.kmpapp.model.MuseumObject
+import com.jetbrains.kmpapp.model.MuseumDtoObject
 import com.jetbrains.kmpapp.repository.MuseumRepository
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -13,7 +13,7 @@ class DetailViewModel(
     objectId: Int
 ) : ViewModel() {
     
-    val obj: StateFlow<MuseumObject?> = 
+    val obj: StateFlow<MuseumDtoObject?> =
         museumRepository.getObjectById(objectId)
             .stateIn(
                 viewModelScope,

@@ -3,7 +3,7 @@ package com.jetbrains.kmpapp.model
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class MuseumObject(
+data class MuseumDtoObject(
     val objectID: Int,
     val title: String,
     val artistDisplayName: String,
