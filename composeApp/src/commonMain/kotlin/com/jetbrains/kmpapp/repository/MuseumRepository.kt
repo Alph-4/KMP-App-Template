@@ -1,6 +1,7 @@
 package com.jetbrains.kmpapp.repository
 
-import com.jetbrains.kmpapp.model.MuseumObject
+import com.jetbrains.kmpapp.data.remote.MuseumApi
+import com.jetbrains.kmpapp.model.MuseumDtoObject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
@@ -22,7 +23,7 @@ class MuseumRepository(
         museumStorage.saveObjects(museumApi.getData())
     }
 
-    fun getObjects(): Flow<List<MuseumObject>> = museumStorage.getObjects()
+    fun getObjects(): Flow<List<MuseumDtoObject>> = museumStorage.getObjects()
 
-    fun getObjectById(objectId: Int): Flow<MuseumObject?> = museumStorage.getObjectById(objectId)
+    fun getObjectById(objectId: Int): Flow<MuseumDtoObject?> = museumStorage.getObjectById(objectId)
 }

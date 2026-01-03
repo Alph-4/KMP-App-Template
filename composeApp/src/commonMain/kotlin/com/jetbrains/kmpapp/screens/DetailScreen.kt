@@ -39,7 +39,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
-import com.jetbrains.kmpapp.model.MuseumObject
+import com.jetbrains.kmpapp.model.MuseumDtoObject
 import com.jetbrains.kmpapp.viewmodel.DetailViewModel
 import kmp_app_template.composeapp.generated.resources.Res
 import kmp_app_template.composeapp.generated.resources.back
@@ -84,7 +84,7 @@ fun DetailScreen(
 
 @Composable
 private fun ObjectDetails(
-    obj: MuseumObject,
+    obj: MuseumDtoObject,
     snackBarHostState: SnackbarHostState,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,

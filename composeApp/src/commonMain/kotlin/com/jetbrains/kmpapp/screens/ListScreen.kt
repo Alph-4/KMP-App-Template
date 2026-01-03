@@ -19,13 +19,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.itemsIndexed
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Error
-import androidx.compose.material3.Card
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -42,7 +41,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.SubcomposeAsyncImage
 import com.jetbrains.kmpapp.model.ListUiState
-import com.jetbrains.kmpapp.model.MuseumObject
+import com.jetbrains.kmpapp.model.MuseumDtoObject
 import com.jetbrains.kmpapp.viewmodel.ListViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -95,7 +94,7 @@ fun ListScreen(
 
 @Composable
 private fun ObjectGrid(
-    objects: List<MuseumObject>,
+    objects: List<MuseumDtoObject>,
     onObjectClick: (Int) -> Unit,
     listState: LazyGridState,
     modifier: Modifier = Modifier,
@@ -124,7 +123,6 @@ private fun ObjectGrid(
 @Composable
 private fun ObjectFrame(
     obj: MuseumObject,
-    index: Int,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {

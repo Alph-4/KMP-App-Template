@@ -1,8 +1,8 @@
 package com.jetbrains.kmpapp.di
 
+import com.jetbrains.kmpapp.data.remote.KtorMuseumApi
+import com.jetbrains.kmpapp.data.remote.MuseumApi
 import com.jetbrains.kmpapp.repository.InMemoryMuseumStorage
-import com.jetbrains.kmpapp.repository.KtorMuseumApi
-import com.jetbrains.kmpapp.repository.MuseumApi
 import com.jetbrains.kmpapp.repository.MuseumRepository
 import com.jetbrains.kmpapp.repository.MuseumStorage
 import com.jetbrains.kmpapp.viewmodel.DetailViewModel
