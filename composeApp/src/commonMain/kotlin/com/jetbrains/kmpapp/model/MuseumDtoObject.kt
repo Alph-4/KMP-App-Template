@@ -1,5 +1,6 @@
 package com.jetbrains.kmpapp.model
 
+import androidx.room.Entity
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -17,4 +18,5 @@ data class MuseumDtoObject(
     val repository: String,
     val department: String,
     val creditLine: String,
+    val isFavorite: Boolean = false
 )

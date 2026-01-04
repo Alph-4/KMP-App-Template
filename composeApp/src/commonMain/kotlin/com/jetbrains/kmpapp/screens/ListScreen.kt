@@ -7,27 +7,24 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.itemsIndexed
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Error
+import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -43,6 +40,7 @@ import coil3.compose.SubcomposeAsyncImage
 import com.jetbrains.kmpapp.model.ListUiState
 import com.jetbrains.kmpapp.model.MuseumDtoObject
 import com.jetbrains.kmpapp.viewmodel.ListViewModel
+import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -51,42 +49,53 @@ fun ListScreen(
     contentPadding: PaddingValues = PaddingValues(0.dp),
     viewModel: ListViewModel = koinViewModel()
 ) {
-    val state by viewModel.objects.collectAsStateWithLifecycle()
-    val listState = rememberLazyGridState()
+    val listState by viewModel.objects.collectAsStateWithLifecycle()
+    val sortType by viewModel.sortingType.collectAsStateWithLifecycle()
+    val gridState = rememberLazyGridState()
 
-    LaunchedEffect(state) {
-        println("ListScreen : State changed, checking scroll...")
-        if (state is ListUiState.Success) {
-            listState.scrollToItem(0)
-        }
+    LaunchedEffect(sortType) {
+        gridState.scrollToItem(0)
     }
 
+    ListScreenContent(
+        uiState = listState,
+        navigateToDetails = navigateToDetails,
+        listState = gridState,
+        contentPadding = contentPadding
+    )
+}
 
-    Scaffold { paddingValues ->
-        Box(modifier = Modifier.padding(paddingValues)) {
-            when (val uiState = state) {
-                is ListUiState.Loading -> {
-                    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        CircularProgressIndicator()
-                    }
+@Composable
+fun ListScreenContent(
+    uiState: ListUiState,
+    navigateToDetails: (Int) -> Unit,
+    listState: LazyGridState,
+    contentPadding: PaddingValues = PaddingValues(0.dp)
+) {
+    // Scaffold interne supprimé car déjà géré par MainScreen.
+    // On utilise directement une Box ou Column avec le padding passé en paramètre.
+    Box(modifier = Modifier.padding(contentPadding)) {
+        when (uiState) {
+            is ListUiState.Loading -> {
+                Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    CircularProgressIndicator()
                 }
+            }
 
-                is ListUiState.Success -> {
-                    val objects = uiState.objects
+            is ListUiState.Success -> {
+                val objects = uiState.objects
 
-                    if (objects.isNotEmpty()) {
-                        ObjectGrid(
-                            objects = objects,
-                            onObjectClick = navigateToDetails,
-                            listState = listState
-                        )
-                    }
+                if (objects.isNotEmpty()) {
+                    ObjectGrid(
+                        objects = objects,
+                        onObjectClick = navigateToDetails,
+                        listState = listState
+                    )
                 }
+            }
 
-                is ListUiState.Error -> {
-                    // Afficher le message d'erreur
-                    EmptyScreenContent(Modifier.fillMaxSize())
-                }
+            is ListUiState.Error -> {
+                EmptyScreenContent(Modifier.fillMaxSize())
             }
         }
     }
@@ -100,11 +109,12 @@ private fun ObjectGrid(
     modifier: Modifier = Modifier,
 ) {
     LazyVerticalGrid(
-        columns = GridCells.Adaptive(180.dp),
+        columns = GridCells.Fixed(2),
         modifier = modifier.fillMaxSize().padding(horizontal = 8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
-        contentPadding = WindowInsets.safeDrawing.asPaddingValues(),
+        // On n'ajoute pas de padding système ici car il est déjà géré par le Scaffold du MainScreen via contentPadding
+        contentPadding = PaddingValues(vertical = 8.dp),
         state = listState
     ) {
         itemsIndexed(
@@ -122,7 +132,8 @@ private fun ObjectGrid(
 
 @Composable
 private fun ObjectFrame(
-    obj: MuseumObject,
+    obj: MuseumDtoObject,
+    index: Int,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -149,9 +160,8 @@ private fun ObjectFrame(
                         Icon(
                             imageVector = Icons.Default.Error,
                             contentDescription = "Erreur",
-                            // C'EST ICI QUE VOUS GÉREZ LA TAILLE
                             modifier = Modifier.size(24.dp),
-                            tint = Color.Red // Optionnel : changer la couleur
+                            tint = Color.Red
                         )
                     }
                 }
@@ -166,5 +176,62 @@ private fun ObjectFrame(
             Text(obj.artistDisplayName, style = MaterialTheme.typography.bodyMedium)
             Text(obj.objectDate, style = MaterialTheme.typography.bodySmall)
         }
+    }
+}
+
+@Preview
+@Composable
+fun ListScreenPreview() {
+    val fakeObjects = listOf(
+        MuseumDtoObject(
+            objectID = 1,
+            title = "The Night Watch",
+            artistDisplayName = "Rembrandt",
+            medium = "Oil on canvas",
+            dimensions = "363 cm × 437 cm",
+            objectURL = "",
+            objectDate = "1642",
+            primaryImage = "",
+            primaryImageSmall = "",
+            repository = "Rijksmuseum",
+            department = "Paintings",
+            creditLine = "On loan"
+        ),
+        MuseumDtoObject(
+            objectID = 2,
+            title = "The Starry Night",
+            artistDisplayName = "Vincent van Gogh",
+            medium = "Oil on canvas",
+            dimensions = "73.7 cm × 92.1 cm",
+            objectURL = "",
+            objectDate = "1889",
+            primaryImage = "",
+            primaryImageSmall = "",
+            repository = "MoMA",
+            department = "Paintings",
+            creditLine = "Acquired through the Lillie P. Bliss Bequest"
+        ),
+        MuseumDtoObject(
+            objectID = 3,
+            title = "Girl with a Pearl Earring",
+            artistDisplayName = "Johannes Vermeer",
+            medium = "Oil on canvas",
+            dimensions = "44.5 cm × 39 cm",
+            objectURL = "",
+            objectDate = "1665",
+            primaryImage = "",
+            primaryImageSmall = "",
+            repository = "Mauritshuis",
+            department = "Paintings",
+            creditLine = "Bequest of Arnoldus Andries des Tombe"
+        )
+    )
+
+    MaterialTheme {
+        ListScreenContent(
+            uiState = ListUiState.Success(fakeObjects),
+            listState = rememberLazyGridState(),
+            navigateToDetails = {}
+        )
     }
 }

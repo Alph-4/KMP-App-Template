@@ -57,6 +57,7 @@ fun MainScreen(
                 actions = {
                     if (currentTab == MainTab.Home) {
                         IconButton(onClick = {
+                            snackbarHostState.currentSnackbarData?.dismiss()
                             listViewModel.toggleSorting()
                             scope.launch {
                                 if (listViewModel.sortingType.value == SortingType.Ascending) {

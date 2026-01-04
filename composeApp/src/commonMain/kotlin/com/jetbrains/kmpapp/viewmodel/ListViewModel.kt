@@ -5,11 +5,15 @@ import androidx.lifecycle.viewModelScope
 import com.jetbrains.kmpapp.model.ListUiState
 import com.jetbrains.kmpapp.model.SortingType
 import com.jetbrains.kmpapp.repository.MuseumRepository
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 
@@ -19,20 +23,30 @@ class ListViewModel(
 
     val sortingType = MutableStateFlow(SortingType.Ascending)
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     val objects: StateFlow<ListUiState> =
         combine(museumRepository.getObjects(), sortingType)
-        { list, sortType ->
-            // 1. STOCKEZ le résultat du tri dans une variable
-            val sortedList = if (sortType == SortingType.Ascending) {
-                list.sortedBy { it.title }
-            } else {
-                list.sortedByDescending { it.title }
+        { list, sortType -> Pair(list, sortType) }
+            .flatMapLatest { (list, sortType) ->
+
+                flow {
+                    // 1. On émet Loading dès que les données ou le tri changent
+                    emit(ListUiState.Loading)
+                    delay(250)
+
+                    // 2. On effectue le tri
+                    val sortedList = if (sortType == SortingType.Ascending) {
+                        list.sortedBy { it.title }
+                    } else {
+                        list.sortedByDescending { it.title }
+                    }
+
+                    // 3. On émet le résultat
+                    emit(ListUiState.Success(sortedList))
+                }
+
+
             }
-
-            // 2. Passez la liste TRIÉE (sortedList) à l'état Success
-            ListUiState.Success(sortedList) as ListUiState
-
-        }
             .onStart {
                 // (Optionnel) Émet "Loading" au démarrage du flux si besoin
                 emit(ListUiState.Loading)

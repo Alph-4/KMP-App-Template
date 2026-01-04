@@ -3,9 +3,9 @@ package com.jetbrains.kmpapp.data.local.model
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity
-data class FavoriteMuseumObject(
-     @PrimaryKey(autoGenerate = true) val objectID: Int,
+@Entity("museum_objects")
+data class MuseumObject(
+    @PrimaryKey val objectID: Int,
     val title: String,
     val artistDisplayName: String,
     val medium: String,
@@ -17,4 +17,5 @@ data class FavoriteMuseumObject(
     val repository: String,
     val department: String,
     val creditLine: String,
+    val isFavorite: Boolean = false
 )

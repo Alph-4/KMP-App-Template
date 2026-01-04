@@ -15,8 +15,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import com.jetbrains.kmpapp.screens.DetailScreen
 import com.jetbrains.kmpapp.screens.MainScreen
+import com.jetbrains.kmpapp.screens.detail.DetailScreen
 
 @Composable
 fun App() {
