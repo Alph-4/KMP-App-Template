@@ -43,9 +43,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.style.TextAlign.Companion.Justify
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import com.jetbrains.kmpapp.model.MuseumDtoObject
@@ -262,9 +263,10 @@ fun askIABtn(viewModel: DetailViewModel, obj: MuseumDtoObject, artWorkDesc: Stri
                         Text(
                             text = artWorkDesc ?: "",
                             style = MaterialTheme.typography.bodyMedium.copy(
-                                lineHeight = TextUnit.Unspecified
+                                lineHeight = 1.em,
+                                textAlign = Justify
                             ),
-                            color = MaterialTheme.colorScheme.onSurface
+                            color = MaterialTheme.colorScheme.onSurface,
                         )
 
                         // Petit footer optionnel

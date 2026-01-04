@@ -26,8 +26,8 @@ class KtorMistralApi(private val client: HttpClient) : MistralApi {
 
         println("ask IA about : $artworkName")
         val prompt =
-            "Agis comme un guide de musée expert et passionné. Décris l'œuvre '$artworkName' en 3 phrases maximum."
-        
+            "Agis comme un guide de musée expert et passionné. Décris l'œuvre '$artworkName' en 3 phrases maximum, est en francais, ajoute egalement si possible une anecdote"
+
         // Création du body (pseudo-code, tu dois utiliser tes DTOs)
         val requestBody = MistralRequest(
             model = "mistral-tiny",
