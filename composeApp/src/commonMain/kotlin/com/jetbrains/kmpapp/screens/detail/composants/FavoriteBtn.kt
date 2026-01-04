@@ -7,6 +7,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import com.jetbrains.kmpapp.model.MuseumDtoObject
 import com.jetbrains.kmpapp.viewmodel.DetailViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -19,7 +21,10 @@ fun FavoriteBtn(
     scope: CoroutineScope,
     snackBarHostState: SnackbarHostState
 ) {
+    val haptic = LocalHapticFeedback.current
+
     IconButton(onClick = {
+        haptic.performHapticFeedback(HapticFeedbackType.Confirm) // ou .TextHandleMove pour plus léger
         viewModel.toggleFavorites()
 
         scope.launch {

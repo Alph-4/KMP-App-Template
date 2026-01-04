@@ -35,14 +35,15 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.text.style.TextAlign.Companion.Justify
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -70,6 +71,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 
+
 @Composable
 fun DetailScreen(
     objectId: Int,
@@ -77,23 +79,14 @@ fun DetailScreen(
 ) {
     val viewModel = koinViewModel<DetailViewModel> { parametersOf(objectId) }
     val obj by viewModel.obj.collectAsStateWithLifecycle()
-
-    val snackbarHostState = remember { SnackbarHostState() }
-
+    val snackBarHostState = remember { SnackbarHostState() }
     // scope - Créer le Scope (pour lancer des actions asynchrones comme afficher la snackbar)
     rememberCoroutineScope()
 
-    LaunchedEffect(Unit) {
-        println("Envoi du toast LaunchedEffect")
-        println("oeuvre d'art : $obj")
-        if (false) {
-            snackbarHostState.showSnackbar("Ceci est un message Toast !")
-        }
-    }
 
     AnimatedContent(obj != null) { objectAvailable ->
         if (objectAvailable) {
-            ObjectDetails(obj!!, snackbarHostState, viewModel, onBackClick = navigateBack)
+            ObjectDetails(obj!!, snackBarHostState, viewModel, onBackClick = navigateBack)
         } else {
             EmptyScreenContent(Modifier.fillMaxSize())
         }
@@ -175,6 +168,8 @@ private fun ObjectDetails(
 @Preview
 @Composable
 fun askIABtn(viewModel: DetailViewModel, obj: MuseumDtoObject, artWorkDesc: String?) {
+    val haptic = LocalHapticFeedback.current
+
     Box(
         modifier = Modifier.padding(16.dp),
 
@@ -229,7 +224,10 @@ fun askIABtn(viewModel: DetailViewModel, obj: MuseumDtoObject, artWorkDesc: Stri
                 // On cache le bouton si on a déjà la réponse pour épurer l'UI
                 androidx.compose.animation.AnimatedVisibility(visible = artWorkDesc == null) {
                     ElevatedButton(
-                        onClick = { viewModel.getArtworkDescription(obj.title) },
+                        onClick = {
+                            haptic.performHapticFeedback(HapticFeedbackType.Confirm)
+                            viewModel.getArtworkDescription(obj.title)
+                        },
                         modifier = Modifier.fillMaxWidth(),
                         colors = androidx.compose.material3.ButtonDefaults.elevatedButtonColors(
                             containerColor = MaterialTheme.colorScheme.primaryContainer,
