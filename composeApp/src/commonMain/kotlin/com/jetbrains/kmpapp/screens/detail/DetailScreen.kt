@@ -263,7 +263,7 @@ fun askIABtn(viewModel: DetailViewModel, obj: MuseumDtoObject, artWorkDesc: Stri
                         Text(
                             text = artWorkDesc ?: "",
                             style = MaterialTheme.typography.bodyMedium.copy(
-                                lineHeight = 1.em,
+                                lineHeight = 1.5.em,
                                 textAlign = Justify
                             ),
                             color = MaterialTheme.colorScheme.onSurface,
