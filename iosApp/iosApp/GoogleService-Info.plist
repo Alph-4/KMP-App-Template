@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>769122380137-g5qv1sjaep15ckeqf152te2ksv19moap.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.769122380137-g5qv1sjaep15ckeqf152te2ksv19moap</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>769122380137-12cr5mqbdh46qlfmcfjmjs55bdefc4lh.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBdFOBdSMH-cQaAwPVwgMvF-I3n_LA0MiE</string>
+	<key>GCM_SENDER_ID</key>
+	<string>769122380137</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.mtp.mytrainingplan</string>
+	<key>PROJECT_ID</key>
+	<string>mtp-develop</string>
+	<key>STORAGE_BUCKET</key>
+	<string>mtp-develop.firebasestorage.app</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:769122380137:ios:55cb2c7072d09c689335f8</string>
+</dict>
+</plist>

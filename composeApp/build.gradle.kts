@@ -35,6 +35,8 @@ kotlin {
             implementation(libs.androidx.compose.ui.tooling.preview)
             implementation(libs.androidx.activity.compose)
             implementation(libs.ktor.client.okhttp)
+            implementation(libs.firebase.analytics)
+            implementation(project.dependencies.platform(libs.firebase.bom))
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
@@ -79,7 +81,7 @@ dependencies {
     add("kspIosX64", libs.androidx.room.compiler)
     add("kspIosArm64", libs.androidx.room.compiler)
     add("kspIosSimulatorArm64", libs.androidx.room.compiler)
-    
+
     debugImplementation(libs.androidx.compose.ui.tooling)
 }
 

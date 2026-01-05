@@ -1,0 +1,78 @@
+{
+  "project_info": {
+    "project_number": "769122380137",
+    "project_id": "mtp-develop",
+    "storage_bucket": "mtp-develop.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:769122380137:android:8569da46684f3a369335f8",
+        "android_client_info": {
+          "package_name": "com.mtp.mytrainingplan"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "769122380137-12cr5mqbdh46qlfmcfjmjs55bdefc4lh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mtp.mytrainingplan",
+            "certificate_hash": "26ade7ec2124693c67406898e6c2584ed7bcda5b"
+          }
+        },
+        {
+          "client_id": "769122380137-3a8n598u23i68edml57g1gvj94nu2vnl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mtp.mytrainingplan",
+            "certificate_hash": "55575c7b7fbea835e3f28ee4d4b851eb9bbdbd8c"
+          }
+        },
+        {
+          "client_id": "769122380137-3b8phdttkgjbvo2djsgnlf1fn1mbl6vd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mtp.mytrainingplan",
+            "certificate_hash": "8f93ca5092c9550896124440f14a1be2ef9dba85"
+          }
+        },
+        {
+          "client_id": "769122380137-7jl6eml5oq0bkb0acmf2arqf07aepu89.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mtp.mytrainingplan",
+            "certificate_hash": "9bbb3186b2189ef16d8f272bdab59362c395cbb4"
+          }
+        },
+        {
+          "client_id": "769122380137-q9e3hqn5kb2saec8paoehmk9j6eatq74.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8Hv5cwi0wjuNLDUNZY9O7SdBqggnI9mU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "769122380137-q9e3hqn5kb2saec8paoehmk9j6eatq74.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "769122380137-ftahugk4tl3i6hvporsau4vdcb7soj1u.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.mtp.mytrainingplanv2"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
